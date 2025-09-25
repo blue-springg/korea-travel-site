@@ -1,41 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Places I Want to Visit in Korea</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Code Puzzle Builder</title>
+    <style>
+        /* Reset and global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background: #0a0a23;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        /* Main container using CSS Grid */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Puzzle and workspace areas */
+        .puzzle-area, .workspace {
+            background: #1b1b32;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+        }
+
+        .puzzle-area h2, .workspace h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #00ff88;
+        }
+
+        /* Code block styling */
+        .code-block {
+            background: #2a2a40;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: move;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .code-block.dragging {
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+
+        .code-block.correct {
+            animation: correct 0.5s ease;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .code-block.incorrect {
+            animation: shake 0.3s ease;
+            box-shadow: 0 0 10px #ff5555;
+        }
+
+        /* Animations */
+        @keyframes correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Builder mode */
+        .builder {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .builder input, .builder textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #2a2a40;
+            color: #ffffff;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+        }
+
+        .builder button, #check-solution, #switch-puzzle {
+            padding: 10px 20px;
+            background: #00ff88;
+            color: #0a0a23;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-weight: bold;
+        }
+
+        .builder button:hover, #check-solution:hover, #switch-puzzle:hover {
+            background: #00cc66;
+        }
+
+        /* Feedback message */
+        #feedback {
+            margin-top: 10px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <h1>Places I Want to Visit in Korea</h1>
+    <h1>Interactive Code Puzzle Builder</h1>
+    <div class="container">
+        <div class="puzzle-area">
+            <h2>Puzzle Blocks</h2>
+            <div id="puzzle-blocks"></div>
+        </div>
+        <div class="workspace">
+            <h2>Workspace</h2>
+            <div id="workspace"></div>
+        </div>
+    </div>
+    <button id="check-solution">Check Solution</button>
+    <button id="switch-puzzle">Switch Puzzle</button>
+    <div id="feedback"></div>
+    <div class="builder">
+        <h2>Create Your Own Puzzle</h2>
+        <input type="text" id="puzzle-title" placeholder="Puzzle Title (e.g., Set Thruster Power)">
+        <textarea id="puzzle-blocks" placeholder="Enter code blocks, one per line"></textarea>
+        <textarea id="puzzle-solution" placeholder="Enter correct solution, one block per line"></textarea>
+        <button id="save-puzzle">Save Puzzle</button>
+    </div>
 
-    <section>
-      <h2>Seoul</h2>
-      <p>The capital city of South Korea, full of modern architecture, history, and street food.</p>
-      <img src="https://cdn.pixabay.com/photo/2016/11/29/03/36/seoul-1867411_1280.jpg" alt="Seoul Tower" width="300" />
-    </section>
+    <script>
+        // Puzzle data: Story-Driven Code Quest and Algorithm Flow
+        const puzzles = [
+            {
+                title: "Story-Driven Code Quest: Fix Spaceship Thrusters",
+                blocks: ["let power = 50;", "power += 25;", "console.log(power);", "power = 100;"],
+                solution: ["let power = 50;", "power += 25;", "console.log(power);"],
+                expectedOutput: "75"
+            },
+            {
+                title: "Algorithm Flow: Bubble Sort Step",
+                blocks: ["for (let i = 0; i < n; i++)", "if (arr[j] > arr[j+1])", "swap(arr[j], arr[j+1])", "let temp = arr[j];"],
+                solution: ["for (let i = 0; i < n; i++)", "if (arr[j] > arr[j+1])", "let temp = arr[j];", "swap(arr[j], arr[j+1])"],
+                expectedOutput: "Sorted array"
+            }
+        ];
 
-    <section>
-      <h2>Jeju Island</h2>
-      <p>A beautiful island known for its beaches, waterfalls, and volcanic landscapes.</p>
-      <img src="https://cdn.pixabay.com/photo/2017/06/27/18/44/jeju-2449788_1280.jpg" alt="Jeju Island" width="300" />
-    </section>
+        let currentPuzzleIndex = 0;
+        let workspaceBlocks = [];
 
-    <section>
-      <h2>Gyeongju</h2>
-      <p>An ancient city with temples and royal tombs from Korea’s Silla dynasty.</p>
-      <img src="https://cdn.pixabay.com/photo/2017/01/10/19/05/bulguksa-temple-1969111_1280.jpg" alt="Bulguksa Temple" width="300" />
-    </section>
+        // DOM elements
+        const puzzleBlocksEl = document.getElementById('puzzle-blocks');
+        const workspaceEl = document.getElementById('workspace');
+        const feedbackEl = document.getElementById('feedback');
+        const checkSolutionBtn = document.getElementById('check-solution');
+        const switchPuzzleBtn = document.getElementById('switch-puzzle');
+        const puzzleTitleInput = document.getElementById('puzzle-title');
+        const puzzleBlocksInput = document.getElementById('puzzle-blocks');
+        const puzzleSolutionInput = document.getElementById('puzzle-solution');
+        const savePuzzleBtn = document.getElementById('save-puzzle');
 
-    <section>
-      <h2>My Korea Travel Bucket List</h2>
-      <ul>
-        <li>Climb N Seoul Tower</li>
-        <li>Swim at Hyeopjae Beach</li>
-        <li>Visit Bulguksa Temple</li>
-      </ul>
-    </section>
+        // Initialize puzzle
+        function loadPuzzle(index) {
+            const puzzle = puzzles[index];
+            puzzleBlocksEl.innerHTML = `<h3>${puzzle.title}</h3>`;
+            workspaceEl.innerHTML = '';
+            workspaceBlocks = [];
+            puzzle.blocks.forEach((block, i) => {
+                const blockEl = document.createElement('div');
+                blockEl.className = 'code-block';
+                blockEl.textContent = block;
+                blockEl.draggable = true;
+                blockEl.id = `block-${i}`;
+                blockEl.addEventListener('dragstart', dragStart);
+                puzzleBlocksEl.appendChild(blockEl);
+            });
+            workspaceEl.addEventListener('dragover', dragOver);
+            workspaceEl.addEventListener('drop', drop);
+            feedbackEl.textContent = '';
+        }
 
-    <p>Want to know more? Visit <a href="https://english.visitkorea.or.kr" target="_blank">VisitKorea</a> for official travel info.</p>
-  </main>
+        // Drag-and-drop handlers
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const blockId = e.dataTransfer.getData('text/plain');
+            const blockEl = document.getElementById(blockId);
+            blockEl.classList.remove('dragging');
+            workspaceEl.appendChild(blockEl);
+            workspaceBlocks = [...workspaceEl.querySelectorAll('.code-block')].map(el => el.textContent);
+        }
+
+        // Check solution
+        function checkSolution() {
+            const puzzle = puzzles[currentPuzzleIndex];
+            const isCorrect = workspaceBlocks.length === puzzle.solution.length &&
+                workspaceBlocks.every((block, i) => block === puzzle.solution[i]);
+            
+            feedbackEl.textContent = isCorrect ? 'Correct! Great job!' : 'Incorrect. Try again!';
+            workspaceEl.querySelectorAll('.code-block').forEach(el => {
+                el.classList.remove('correct', 'incorrect');
+                el.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+        }
+
+        // Switch puzzle
+        function switchPuzzle() {
+            currentPuzzleIndex = (currentPuzzleIndex + 1) % puzzles.length;
+            loadPuzzle(currentPuzzleIndex);
+        }
+
+        // Save custom puzzle
+        function savePuzzle() {
+            const title = puzzleTitleInput.value.trim();
+            const blocks = puzzleBlocksInput.value.trim().split('\n').filter(b => b);
+            const solution = puzzleSolutionInput.value.trim().split('\n').filter(b => b);
+            
+            if (title && blocks.length && solution.length) {
+                const newPuzzle = { title, blocks, solution, expectedOutput: 'Custom Output' };
+                puzzles.push(newPuzzle);
+                localStorage.setItem('customPuzzles', JSON.stringify(puzzles.slice(2)));
+                feedbackEl.textContent = 'Puzzle saved!';
+                puzzleTitleInput.value = '';
+                puzzleBlocksInput.value = '';
+                puzzleSolutionInput.value = '';
+            } else {
+                feedbackEl.textContent = 'Please fill all fields.';
+            }
+        }
+
+        // Load custom puzzles from localStorage
+        function loadCustomPuzzles() {
+            const saved = localStorage.getItem('customPuzzles');
+            if (saved) {
+                puzzles.push(...JSON.parse(saved));
+            }
+        }
+
+        // Event listeners
+        checkSolutionBtn.addEventListener('click', checkSolution);
+        switchPuzzleBtn.addEventListener('click', switchPuzzle);
+        savePuzzleBtn.addEventListener('click', savePuzzle);
+
+        // Initialize
+        loadCustomPuzzles();
+        loadPuzzle(currentPuzzleIndex);
+    </script>
 </body>
 </html>
