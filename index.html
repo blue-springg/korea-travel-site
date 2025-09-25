@@ -3,21 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motivational Chatbot</title>
+    <title>Motivational Chatbot Pro</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Motivational Chatbot</h1>
-    <p class="subtitle">Share how you're feeling, and I'll send some positivity your way!</p>
+    <header>
+        <h1>Motivational Chatbot Pro</h1>
+        <p class="subtitle">Your personal companion for positivity and emotional support</p>
+    </header>
     <div class="chat-container">
         <div class="chat-window" id="chat-window"></div>
+        <div class="mood-options">
+            <h3>Quick Mood Select</h3>
+            <button class="mood-btn" data-mood="I'm feeling sad today">Sad</button>
+            <button class="mood-btn" data-mood="I'm stressed out">Stressed</button>
+            <button class="mood-btn" data-mood="I'm happy!">Happy</button>
+            <button class="mood-btn" data-mood="I'm anxious">Anxious</button>
+            <button class="mood-btn" data-mood="I'm motivated">Motivated</button>
+        </div>
         <div class="input-area">
-            <input type="text" id="user-input" placeholder="How are you feeling today?" aria-label="Enter your mood or feelings">
+            <input type="text" id="user-input" placeholder="Share how you're feeling..." aria-label="Enter your mood or feelings">
             <button id="send-message">Send</button>
+        </div>
+        <div class="controls">
             <button id="reset-chat">Reset Chat</button>
             <button id="download-chat">Download Chat</button>
+            <button id="daily-tip">Get Daily Tip</button>
         </div>
     </div>
+    <footer>
+        <p>Built with ❤️ using HTML, CSS, and JavaScript</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
