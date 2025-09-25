@@ -3,53 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Outfit Designer</title>
+    <title>Motivational Chatbot</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Character Outfit Designer</h1>
-    <div class="container">
-        <div class="options">
-            <h2>Choose Your Base</h2>
-            <select id="base-select">
-                <option value="bear">Bear</option>
-                <option value="cat">Cat</option>
-            </select>
-
-            <h2>Outfits</h2>
-            <div class="outfit-section">
-                <label>Hat:</label>
-                <select id="hat-select">
-                    <option value="none">None</option>
-                    <option value="top-hat">Top Hat</option>
-                    <option value="baseball-cap">Baseball Cap</option>
-                </select>
-                <input type="color" id="hat-color" value="#ff0000">
-            </div>
-            <div class="outfit-section">
-                <label>Shirt:</label>
-                <select id="shirt-select">
-                    <option value="none">None</option>
-                    <option value="t-shirt">T-Shirt</option>
-                    <option value="jacket">Jacket</option>
-                </select>
-                <input type="color" id="shirt-color" value="#00ff00">
-            </div>
-            <div class="outfit-section">
-                <label>Pants:</label>
-                <select id="pants-select">
-                    <option value="none">None</option>
-                    <option value="shorts">Shorts</option>
-                    <option value="jeans">Jeans</option>
-                </select>
-                <input type="color" id="pants-color" value="#0000ff">
-            </div>
-            <button id="update-preview">Update Preview</button>
-            <button id="download-png">Download Design</button>
-        </div>
-        <div class="preview">
-            <h2>Preview</h2>
-            <canvas id="character-canvas" width="300" height="400"></canvas>
+    <h1>Motivational Chatbot</h1>
+    <p class="subtitle">Share how you're feeling, and I'll send some positivity your way!</p>
+    <div class="chat-container">
+        <div class="chat-window" id="chat-window"></div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="How are you feeling today?" aria-label="Enter your mood or feelings">
+            <button id="send-message">Send</button>
+            <button id="reset-chat">Reset Chat</button>
+            <button id="download-chat">Download Chat</button>
         </div>
     </div>
     <script src="script.js"></script>
